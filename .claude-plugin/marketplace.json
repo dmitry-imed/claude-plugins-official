@@ -709,8 +709,7 @@
       "category": "development",
       "source": {
         "source": "url",
-        "url": "https://github.com/qodo-ai/qodo-skills.git",
-        "sha": "623eb4ed4364d8111f9a9132a791d7497d814b6a"
+        "url": "https://github.com/qodo-ai/qodo-skills.git"
       },
       "homepage": "https://github.com/qodo-ai/qodo-skills.git"
     },
