@@ -1038,6 +1038,24 @@
         "sha": "eeef353eead2e3dc5f33f64dbaae54e1309e0d45"
       },
       "homepage": "https://github.com/intercom/claude-plugin-external"
+    },
+    {
+      "name": "telegram",
+      "description": "Telegram messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /telegram:access.",
+      "category": "productivity",
+      "source": "./external_plugins/telegram"
+    },
+    {
+      "name": "discord",
+      "description": "Discord messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /discord:access.",
+      "category": "productivity",
+      "source": "./external_plugins/discord"
+    },
+    {
+      "name": "fakechat",
+      "description": "Localhost web chat for testing the channel notification flow. No tokens, no access control, no third-party service.",
+      "category": "development",
+      "source": "./external_plugins/fakechat"
     }
   ]
 }
