@@ -1,12 +1,7 @@
 ---
 name: access
 description: Manage Discord channel access — approve pairings, edit allowlists, set DM/group policy. Use when the user asks to pair, approve someone, check who's allowed, or change policy for the Discord channel.
-user-invocable: true
-allowed-tools:
-  - Read
-  - Write
-  - Bash(ls *)
-  - Bash(mkdir *)
+allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *)
 ---
 
 # /discord-threads:access — Discord Channel Access Management
