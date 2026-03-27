@@ -1,7 +1,7 @@
 {
   "name": "discord-threads",
   "description": "Discord plugin with per-session thread routing for multi-session Claude Code. Includes full permission context in messages and session-isolated threads.",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "keywords": [
     "discord",
     "threads",
