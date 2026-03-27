@@ -79,7 +79,27 @@ With Claude Code running from the previous step, DM your bot on Discord — it r
 
 Your next DM reaches the assistant.
 
-**8. Lock it down.**
+**8. Auto-allow Discord tools (recommended).**
+
+By default, every Discord reply/react/edit triggers a permission prompt. To auto-approve all Discord tools, add this to `~/.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_discord_discord__reply",
+      "mcp__plugin_discord_discord__react",
+      "mcp__plugin_discord_discord__edit_message",
+      "mcp__plugin_discord_discord__fetch_messages",
+      "mcp__plugin_discord_discord__download_attachment"
+    ]
+  }
+}
+```
+
+Or merge with your existing permissions if you already have an `allow` array.
+
+**9. Lock it down.**
 
 Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord:access policy allowlist` directly.
 
