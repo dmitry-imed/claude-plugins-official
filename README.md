@@ -91,11 +91,11 @@ By default, every Discord reply/react/edit triggers a permission prompt. To auto
 {
   "permissions": {
     "allow": [
-      "mcp__plugin_discord_discord__reply",
-      "mcp__plugin_discord_discord__react",
-      "mcp__plugin_discord_discord__edit_message",
-      "mcp__plugin_discord_discord__fetch_messages",
-      "mcp__plugin_discord_discord__download_attachment"
+      "mcp__plugin_discord-threads_discord__reply",
+      "mcp__plugin_discord-threads_discord__react",
+      "mcp__plugin_discord-threads_discord__edit_message",
+      "mcp__plugin_discord-threads_discord__fetch_messages",
+      "mcp__plugin_discord-threads_discord__download_attachment"
     ]
   }
 }

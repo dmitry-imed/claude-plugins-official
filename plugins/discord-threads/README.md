@@ -87,11 +87,11 @@ By default, every Discord reply/react/edit triggers a permission prompt. To auto
 {
   "permissions": {
     "allow": [
-      "mcp__plugin_discord_discord__reply",
-      "mcp__plugin_discord_discord__react",
-      "mcp__plugin_discord_discord__edit_message",
-      "mcp__plugin_discord_discord__fetch_messages",
-      "mcp__plugin_discord_discord__download_attachment"
+      "mcp__plugin_discord-threads_discord__reply",
+      "mcp__plugin_discord-threads_discord__react",
+      "mcp__plugin_discord-threads_discord__edit_message",
+      "mcp__plugin_discord-threads_discord__fetch_messages",
+      "mcp__plugin_discord-threads_discord__download_attachment"
     ]
   }
 }
@@ -101,7 +101,7 @@ Or merge with your existing permissions if you already have an `allow` array.
 
 **9. Lock it down.**
 
-Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord:access policy allowlist` directly.
+Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord-threads:access policy allowlist` directly.
 
 ## Session threads
 
