@@ -47,8 +47,8 @@ These are Claude Code commands — run `claude` to start a session first.
 
 Install the plugin:
 ```
-/plugin marketplace add dmitry-imed/claude-discord-threads-plugin
-/plugin install discord-threads@dmitry-plugins
+/plugin marketplace add axiumfoundry/claude-discord-threads-plugin
+/plugin install discord-threads@axiumfoundry-plugins
 ```
 
 **5. Give the server the token.**
@@ -66,7 +66,7 @@ Writes `DISCORD_BOT_TOKEN=...` to `~/.claude/channels/discord/.env`. You can als
 The server won't connect without this — exit your session and start a new one:
 
 ```sh
-claude --channels plugin:discord-threads@dmitry-plugins
+claude --channels plugin:discord-threads@axiumfoundry-plugins
 ```
 
 **7. Pair.**

@@ -1,7 +1,7 @@
 {
-  "name": "dmitry-plugins",
+  "name": "axiumfoundry-plugins",
   "owner": {
-    "name": "dmitry-imed"
+    "name": "axiumfoundry"
   },
   "plugins": [
     {
