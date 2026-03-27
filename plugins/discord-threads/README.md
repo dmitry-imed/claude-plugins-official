@@ -45,20 +45,16 @@ Integration type: **Guild Install**. Copy the **Generated URL**, open it, and ad
 
 These are Claude Code commands — run `claude` to start a session first.
 
-Add the marketplace:
-```
-/plugin marketplace add axiumfoundry/claude-discord-threads-plugin
-```
-
 Install the plugin:
 ```
+/plugin marketplace add axiumfoundry/claude-discord-threads-plugin
 /plugin install discord-threads@axiumfoundry-plugins
 ```
 
 **5. Give the server the token.**
 
 ```
-/discord-threads:configure MTIz...
+/discord:configure MTIz...
 ```
 
 Writes `DISCORD_BOT_TOKEN=...` to `~/.claude/channels/discord/.env`. You can also write that file by hand, or set the variable in your shell environment — shell takes precedence.
@@ -78,7 +74,7 @@ claude --channels plugin:discord-threads@axiumfoundry-plugins
 With Claude Code running from the previous step, DM your bot on Discord — it replies with a pairing code. If the bot doesn't respond, make sure your session is running with `--channels`. In your Claude Code session:
 
 ```
-/discord-threads:access pair <code>
+/discord:access pair <code>
 ```
 
 Your next DM reaches the assistant.
@@ -105,7 +101,7 @@ Or merge with your existing permissions if you already have an `allow` array.
 
 **9. Lock it down.**
 
-Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord-threads:access policy allowlist` directly.
+Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord:access policy allowlist` directly.
 
 ## Session threads
 
@@ -114,10 +110,10 @@ When running multiple Claude Code sessions simultaneously, each session can crea
 **Setup:** Enable Developer Mode in Discord (User Settings → Advanced), right-click the text channel where threads should be created → Copy Channel ID. Then run:
 
 ```
-/discord-threads:configure threads <channel_id>
+/discord:configure threads <channel_id>
 ```
 
-This saves `DISCORD_THREAD_CHANNEL_ID` to `~/.claude/channels/discord/.env`. To disable: `/discord-threads:configure threads off`.
+This saves `DISCORD_THREAD_CHANNEL_ID` to `~/.claude/channels/discord/.env`. To disable: `/discord:configure threads off`.
 
 **How it works:**
 
@@ -137,7 +133,7 @@ This saves `DISCORD_THREAD_CHANNEL_ID` to `~/.claude/channels/discord/.env`. To 
 
 ## Access control
 
-See **[ACCESS.md](plugins/discord-threads/ACCESS.md)** for DM policies, guild channels, mention detection, delivery config, skill commands, and the `access.json` schema.
+See **[ACCESS.md](./ACCESS.md)** for DM policies, guild channels, mention detection, delivery config, skill commands, and the `access.json` schema.
 
 Quick reference: IDs are Discord **snowflakes** (numeric — enable Developer Mode, right-click → Copy ID). Default policy is `pairing`. Guild channels are opt-in per channel ID.
 
