@@ -556,12 +556,12 @@ mcp.setNotificationHandler(
     } catch {
       prettyInput = input_preview
     }
-    // Show full context upfront — truncate if over Discord's 2000 char limit.
+    // Show full context — split across multiple messages if needed.
     const detail =
       `🔐 **Permission: ${tool_name}**\n\n` +
       `${description}\n\n` +
       `\`\`\`json\n${prettyInput}\n\`\`\``
-    const text = detail.length > 1900 ? detail.slice(0, 1897) + '…```' : detail
+    const chunks = chunk(detail, 1900, 'newline')
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder()
         .setCustomId(`perm:allow:${request_id}`)
@@ -574,10 +574,18 @@ mcp.setNotificationHandler(
         .setEmoji('❌')
         .setStyle(ButtonStyle.Danger),
     )
+
+    const sendPermChunks = async (send: (opts: { content: string; components?: any[] }) => Promise<any>) => {
+      for (let i = 0; i < chunks.length; i++) {
+        const isLast = i === chunks.length - 1
+        await send({ content: chunks[i], ...(isLast ? { components: [row] } : {}) })
+      }
+    }
+
     // If a session thread exists, send permission requests there instead of DMs.
     if (sessionThread) {
       try {
-        await sessionThread.send({ content: text, components: [row] })
+        await sendPermChunks((opts) => sessionThread.send(opts))
       } catch (e) {
         process.stderr.write(`permission_request send to session thread failed: ${e}\n`)
       }
@@ -586,7 +594,7 @@ mcp.setNotificationHandler(
         void (async () => {
           try {
             const user = await client.users.fetch(userId)
-            await user.send({ content: text, components: [row] })
+            await sendPermChunks((opts) => user.send(opts))
           } catch (e) {
             process.stderr.write(`permission_request send to ${userId} failed: ${e}\n`)
           }
