@@ -1188,7 +1188,7 @@ async function handleInbound(msg) {
     const lead = result.isResend ? 'Still pending' : 'Pairing required'
     try {
       await sendMessage(msg.channel_id, {
-        content: `${lead} — run in Claude Code:\n\n/discord:access pair ${result.code}`,
+        content: `${lead} — run in Claude Code:\n\n/discord-threads:access pair ${result.code}`,
         reply_to: msg.id,
       })
     } catch (err) {
