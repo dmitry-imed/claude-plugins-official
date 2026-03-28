@@ -57,7 +57,7 @@ if (!TOKEN) {
 const INBOX_DIR = join(STATE_DIR, 'inbox')
 
 const THREAD_PARENT_CHANNEL_ID = process.env.DISCORD_THREAD_CHANNEL_ID?.trim() || null
-const SESSION_ARCHIVE_ON_EXIT = process.env.DISCORD_SESSION_ARCHIVE === 'true'
+const SESSION_ARCHIVE_ON_EXIT = process.env.DISCORD_SESSION_ARCHIVE !== 'false'
 
 // ─── Project / session detection ─────────────────────────────────────────────
 
@@ -226,6 +226,7 @@ async function addThreadMember(threadId, userId) {
 async function archiveThread(threadId) {
   await api('PATCH', `/channels/${threadId}`, { archived: true })
 }
+
 
 async function interactionRespond(interactionId, interactionToken, data) {
   const res = await fetch(`${API}/interactions/${interactionId}/${interactionToken}/callback`, {
@@ -1271,9 +1272,8 @@ async function shutdown() {
     } catch {}
   }
 
-  setTimeout(() => process.exit(0), 2000)
   ws?.close(1000)
-  process.exit(0)
+  setTimeout(() => process.exit(0), 2000)
 }
 
 process.stdin.on('end', () => { void shutdown() })

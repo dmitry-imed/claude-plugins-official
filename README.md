@@ -135,7 +135,7 @@ This saves `DISCORD_THREAD_CHANNEL_ID` to `~/.claude/channels/discord/.env`. To 
 | Variable | Default | Description |
 | --- | --- | --- |
 | `DISCORD_SESSION_NAME` | _(auto: `dir/branch date suffix`)_ | Explicit thread name override (max 100 chars). |
-| `DISCORD_SESSION_ARCHIVE` | `false` | Set to `true` to archive the thread when the session ends. |
+| `DISCORD_SESSION_ARCHIVE` | `true` | Archive the thread when the session ends. Set to `false` to keep threads open. |
 
 **Permissions:** Private threads require the bot to have **Create Private Threads** permission. If missing, the server falls back to public threads automatically.
 
