@@ -76,17 +76,17 @@ You can also write the `.env` file by hand, or set the variable in your shell en
 The server won't connect without this — exit your session and start a new one:
 
 ```sh
-claude --dangerously-load-development-channels --channels plugin:discord-threads@axiumfoundry-plugins
+claude --dangerously-load-development-channels plugin:discord-threads@axiumfoundry-plugins
 ```
 
 > The `--dangerously-load-development-channels` flag is required until the plugin is listed in the official Claude plugin directory. For convenience, add a shell alias:
 > ```sh
-> alias claude-discord='claude --dangerously-load-development-channels --channels plugin:discord-threads@axiumfoundry-plugins'
+> alias claude-discord='claude --dangerously-load-development-channels plugin:discord-threads@axiumfoundry-plugins'
 > ```
 
 **8. Pair.**
 
-With Claude Code running from the previous step, DM your bot on Discord — it replies with a pairing code. If the bot doesn't respond, make sure your session is running with `--channels`. In your Claude Code session:
+With Claude Code running from the previous step, DM your bot on Discord — it replies with a pairing code. If the bot doesn't respond, make sure you launched with the channel flag (step 7). In your Claude Code session:
 
 ```
 /discord-threads:access pair <code>
@@ -163,7 +163,7 @@ Add `--dangerously-load-development-channels` to your launch command (see step 7
 
 **Bot doesn't respond to DMs**
 
-- Make sure you launched with `--channels`: `claude --channels plugin:discord-threads@axiumfoundry-plugins`
+- Make sure you launched with the channel flag: `claude --dangerously-load-development-channels plugin:discord-threads@axiumfoundry-plugins`
 - Check that **Message Content Intent** is enabled in the Discord Developer Portal (Bot → Privileged Gateway Intents).
 - Confirm you share a server with the bot — Discord doesn't allow DMs otherwise.
 
