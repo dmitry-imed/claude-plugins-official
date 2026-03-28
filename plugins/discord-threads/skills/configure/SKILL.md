@@ -97,7 +97,8 @@ If not, add it. This is also run automatically when saving a token.
    preserve other keys. Write back, no quotes around the value.
 4. `chmod 600 ~/.claude/channels/discord/.env` — the token is a credential.
 5. Run the channel allowlist check (see below) and fix if needed.
-6. Confirm, then show the no-args status so the user sees where they stand.
+6. Run the tool permissions check (see below) and fix if needed.
+7. Confirm, then show the no-args status so the user sees where they stand.
 
 ### `threads <channel_id>` — configure session threads
 
@@ -161,6 +162,48 @@ The managed-settings file lives at:
 
 This check is run automatically when saving a token and can also be
 triggered directly with `/discord-threads:configure allow-plugin`.
+
+## Tool permissions check
+
+Without auto-allow rules, every Discord reply/react/edit triggers a
+permission prompt. This check ensures the Discord MCP tools are in the
+user's `~/.claude/settings.json` allow list.
+
+**Required tool names:**
+```
+mcp__plugin_discord-threads_discord__reply
+mcp__plugin_discord-threads_discord__react
+mcp__plugin_discord-threads_discord__edit_message
+mcp__plugin_discord-threads_discord__fetch_messages
+mcp__plugin_discord-threads_discord__download_attachment
+```
+
+**Check:**
+1. Read `~/.claude/settings.json` (missing file = not configured).
+2. Look for all five tool names in `permissions.allow` array.
+
+**Fix (if any are missing):**
+1. If the file exists, read it, parse the JSON. Ensure
+   `permissions.allow` exists as an array (create if missing). Add any
+   missing tool names (dedupe). Write back with 2-space indent.
+2. If the file doesn't exist, write:
+   ```json
+   {
+     "permissions": {
+       "allow": [
+         "mcp__plugin_discord-threads_discord__reply",
+         "mcp__plugin_discord-threads_discord__react",
+         "mcp__plugin_discord-threads_discord__edit_message",
+         "mcp__plugin_discord-threads_discord__fetch_messages",
+         "mcp__plugin_discord-threads_discord__download_attachment"
+       ]
+     }
+   }
+   ```
+3. Confirm: *"Auto-approved Discord tools — no permission prompts for
+   reply, react, edit, fetch, and download."*
+
+This check is run automatically when saving a token.
 
 ## Implementation notes
 

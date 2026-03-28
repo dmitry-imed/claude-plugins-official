@@ -65,7 +65,11 @@ Exit and start a new `claude` session. The skill commands (`/discord-threads:con
 /discord-threads:configure MTIz...
 ```
 
-This saves the token to `~/.claude/channels/discord/.env` and automatically adds the plugin to Claude Code's channel allowlist (`~/.config/ClaudeCode/managed-settings.json`). You can also write the `.env` file by hand, or set the variable in your shell environment — shell takes precedence.
+This saves the token to `~/.claude/channels/discord/.env` and automatically:
+- Adds the plugin to Claude Code's channel allowlist (`~/.config/ClaudeCode/managed-settings.json`)
+- Auto-approves the Discord MCP tools so replies don't trigger permission prompts (`~/.claude/settings.json`)
+
+You can also write the `.env` file by hand, or set the variable in your shell environment — shell takes precedence.
 
 > To run multiple bots on one machine (different tokens, separate allowlists), point `DISCORD_STATE_DIR` at a different directory per instance.
 
@@ -87,27 +91,7 @@ With Claude Code running from the previous step, DM your bot on Discord — it r
 
 Your next DM reaches the assistant.
 
-**9. Auto-allow Discord tools (recommended).**
-
-By default, every Discord reply/react/edit triggers a permission prompt. To auto-approve all Discord tools, add this to `~/.claude/settings.json`:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "mcp__plugin_discord-threads_discord__reply",
-      "mcp__plugin_discord-threads_discord__react",
-      "mcp__plugin_discord-threads_discord__edit_message",
-      "mcp__plugin_discord-threads_discord__fetch_messages",
-      "mcp__plugin_discord-threads_discord__download_attachment"
-    ]
-  }
-}
-```
-
-Or merge with your existing permissions if you already have an `allow` array.
-
-**10. Lock it down.**
+**9. Lock it down.**
 
 Pairing is for capturing IDs. Once you're in, switch to `allowlist` so strangers don't get pairing-code replies. Ask Claude to do it, or `/discord-threads:access policy allowlist` directly.
 
@@ -203,7 +187,7 @@ Restart Claude Code after installing the plugin. Skills aren't loaded until the 
 
 **Every reply triggers a permission prompt**
 
-Add the Discord tools to your auto-allow list in `~/.claude/settings.json` (see step 9 above).
+Re-run `/discord-threads:configure` with your token — it auto-adds the tool permissions to `~/.claude/settings.json`.
 
 **Guild channel messages are ignored**
 
