@@ -13,7 +13,7 @@
  * Requires Node 22+ (for stable WebSocket and fetch).
  */
 
-import { randomBytes } from 'crypto'
+import { randomBytes, createHash } from 'crypto'
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, statSync, renameSync, realpathSync, chmodSync } from 'fs'
 import { homedir } from 'os'
@@ -122,10 +122,16 @@ let sessionThreadId = null
 
 // ─── Session thread persistence ─────────────────────────────────────────────
 
+function sessionStateFile() {
+  const key = `${THREAD_PARENT_CHANNEL_ID}:${detectProjectDir()}`
+  const hash = createHash('sha256').update(key).digest('hex').slice(0, 16)
+  return join(SESSION_THREADS_DIR, `${hash}.json`)
+}
+
 function loadSessionThread() {
   if (!THREAD_PARENT_CHANNEL_ID) return null
   try {
-    return JSON.parse(readFileSync(join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`), 'utf8'))
+    return JSON.parse(readFileSync(sessionStateFile(), 'utf8'))
   } catch {
     return null
   }
@@ -134,16 +140,13 @@ function loadSessionThread() {
 function saveSessionThread(threadId) {
   if (!THREAD_PARENT_CHANNEL_ID) return
   mkdirSync(SESSION_THREADS_DIR, { recursive: true })
-  writeFileSync(
-    join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`),
-    JSON.stringify({ threadId, startedAt: new Date().toISOString() }),
-  )
+  writeFileSync(sessionStateFile(), JSON.stringify({ threadId, startedAt: new Date().toISOString() }))
 }
 
 function clearSessionThread() {
   if (!THREAD_PARENT_CHANNEL_ID) return
   try {
-    rmSync(join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`), { force: true })
+    rmSync(sessionStateFile(), { force: true })
   } catch {}
 }
 
