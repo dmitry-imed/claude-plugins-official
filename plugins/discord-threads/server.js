@@ -33,6 +33,7 @@ const STATE_DIR = process.env.DISCORD_STATE_DIR ?? join(homedir(), '.claude', 'c
 const ACCESS_FILE = join(STATE_DIR, 'access.json')
 const APPROVED_DIR = join(STATE_DIR, 'approved')
 const ENV_FILE = join(STATE_DIR, '.env')
+const SESSION_THREADS_DIR = join(STATE_DIR, 'session-threads')
 
 // Load ~/.claude/channels/discord/.env into process.env. Real env wins.
 try {
@@ -118,6 +119,33 @@ function resolveSessionName() {
 
 const SESSION_NAME = THREAD_PARENT_CHANNEL_ID ? resolveSessionName() : null
 let sessionThreadId = null
+
+// ─── Session thread persistence ─────────────────────────────────────────────
+
+function loadSessionThread() {
+  if (!THREAD_PARENT_CHANNEL_ID) return null
+  try {
+    return JSON.parse(readFileSync(join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`), 'utf8'))
+  } catch {
+    return null
+  }
+}
+
+function saveSessionThread(threadId) {
+  if (!THREAD_PARENT_CHANNEL_ID) return
+  mkdirSync(SESSION_THREADS_DIR, { recursive: true })
+  writeFileSync(
+    join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`),
+    JSON.stringify({ threadId, startedAt: new Date().toISOString() }),
+  )
+}
+
+function clearSessionThread() {
+  if (!THREAD_PARENT_CHANNEL_ID) return
+  try {
+    rmSync(join(SESSION_THREADS_DIR, `${THREAD_PARENT_CHANNEL_ID}.json`), { force: true })
+  } catch {}
+}
 
 process.on('unhandledRejection', err => {
   process.stderr.write(`discord channel: unhandled rejection: ${err}\n`)
@@ -1093,6 +1121,23 @@ async function onReady() {
   if (!THREAD_PARENT_CHANNEL_ID || !SESSION_NAME) return
   if (sessionThreadId) return // already created — reconnect, not first connect
 
+  // Check for an existing active thread from a previous process
+  const saved = loadSessionThread()
+  if (saved?.threadId) {
+    try {
+      const existing = await fetchChannel(saved.threadId)
+      if (!existing.thread_metadata?.archived) {
+        sessionThreadId = saved.threadId
+        saveSessionThread(saved.threadId)
+        await sendMessage(sessionThreadId, { content: `Session resumed: **${SESSION_NAME}**` })
+        process.stderr.write(`discord channel: reusing existing session thread: ${sessionThreadId}\n`)
+        return
+      }
+    } catch {
+      // Thread no longer accessible — create new
+    }
+  }
+
   try {
     const parent = await fetchChannel(THREAD_PARENT_CHANNEL_ID)
     if (parent.type === CHANNEL_DM) {
@@ -1110,6 +1155,7 @@ async function onReady() {
     }
 
     sessionThreadId = thread.id
+    saveSessionThread(thread.id)
 
     const access = loadAccess()
     for (const userId of access.allowFrom) {
@@ -1269,6 +1315,7 @@ async function shutdown() {
       await sendMessage(sessionThreadId, { content: 'Session ended.' })
       if (SESSION_ARCHIVE_ON_EXIT) {
         await archiveThread(sessionThreadId)
+        clearSessionThread()
       }
     } catch {}
   }
