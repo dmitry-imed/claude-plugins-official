@@ -6,7 +6,7 @@ When the bot receives a message, the MCP server forwards it to Claude and provid
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org) 22+ — the MCP server runs on Node with zero npm dependencies.
+- [Bun](https://bun.sh) — the MCP server runs on Bun with discord.js and the MCP SDK. Dependencies are auto-installed on first launch.
 
 ## Quick Setup
 > Default pairing flow for a single-user DM bot. See [ACCESS.md](./ACCESS.md) for groups and multi-user setups.
